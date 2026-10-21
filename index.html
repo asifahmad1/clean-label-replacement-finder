@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clean-Label &amp; E-Number Replacement Finder — Asif SaaS Studio</title>
+<style>
+  :root{--emerald:#103E32;--emerald2:#0B3D2E;--lime:#DCF5B5;--paper:#F7F8F2;--gold:#C9A227;--ink:#1d2b26;--mut:#5a6b63;--line:#d8e2d5;--pass:#1e7d46;--warn:#9a6a00;--bad:#b3362b}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Georgia,'Times New Roman',serif;background:var(--paper);color:var(--ink)}
+  header{background:linear-gradient(135deg,var(--emerald2),var(--emerald));color:#fff;padding:22px 18px 18px;text-align:center}
+  header .brand{color:var(--gold);letter-spacing:3px;font-size:12px;text-transform:uppercase}
+  header h1{margin:6px 0 4px;font-size:26px;font-weight:normal}
+  header p{margin:0;color:var(--lime);font-size:14px}
+  .wrap{max-width:1180px;margin:0 auto;padding:16px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px;margin-bottom:16px;box-shadow:0 1px 3px rgba(16,62,50,.06)}
+  .card h2{margin:0 0 10px;font-size:18px;color:var(--emerald);border-bottom:2px solid var(--lime);padding-bottom:6px}
+  .card h3{margin:14px 0 6px;font-size:15px;color:var(--emerald)}
+  .banner{background:#fdf6e0;border:1px solid #e8d489;border-left:5px solid var(--gold);border-radius:8px;padding:12px 14px;font-size:13.5px;margin-bottom:16px}
+  .banner b{color:var(--emerald)}
+  label{display:block;font-size:13px;color:var(--mut);margin:8px 0 3px}
+  input[type=text],select{width:100%;padding:8px 9px;border:1px solid var(--line);border-radius:6px;font:inherit;font-size:14px;background:#fff}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
+  .chips button{padding:6px 11px;border:1px solid var(--emerald);background:#fff;color:var(--emerald);border-radius:20px;cursor:pointer;font:inherit;font-size:13px}
+  .chips button.on{background:var(--emerald);color:#fff}
+  .btn{display:inline-block;padding:8px 13px;border:1px solid var(--emerald);background:var(--emerald);color:#fff;border-radius:6px;cursor:pointer;font:inherit;font-size:13.5px;margin:4px 4px 0 0}
+  .btn.ghost{background:#fff;color:var(--emerald)}
+  .btn.small{padding:5px 9px;font-size:12.5px}
+  .btn:disabled{opacity:.45;cursor:default}
+  .grid{display:grid;grid-template-columns:380px 1fr;gap:16px;align-items:start}
+  @media(max-width:880px){.grid{grid-template-columns:1fr}}
+  .alist{display:flex;flex-direction:column;gap:8px;max-height:760px;overflow:auto;padding-right:2px}
+  .aitem{text-align:left;border:1px solid var(--line);background:#fff;border-radius:8px;padding:10px 12px;cursor:pointer;font:inherit;width:100%}
+  .aitem:hover{border-color:var(--emerald)}
+  .aitem.on{border-color:var(--emerald);background:#f2f8ec;box-shadow:inset 3px 0 0 var(--emerald)}
+  .aitem .en{font-weight:bold;color:var(--emerald);font-size:15px}
+  .aitem .an{font-size:14px}
+  .aitem .af{font-size:12px;color:var(--mut)}
+  .tag{display:inline-block;font-size:11px;border:1px solid var(--line);border-radius:12px;padding:1px 8px;margin:2px 3px 0 0;color:var(--mut);background:#fbfcf8}
+  .tag.keep{border-color:var(--pass);color:var(--pass)}
+  .tag.fn{border-color:#bcd3a8;color:var(--emerald);background:#f4faee}
+  .meta{font-size:13.5px;margin:5px 0}
+  .meta b{color:var(--emerald)}
+  .keepbox{background:#eef7ee;border:1px solid #a9cfa9;border-left:5px solid var(--pass);border-radius:8px;padding:12px 14px;font-size:14px;margin:12px 0}
+  .rep{border:1px solid var(--line);border-radius:9px;padding:12px 14px;margin:10px 0;background:#fff}
+  .rep h4{margin:0 0 4px;font-size:15.5px;color:var(--emerald)}
+  .match{font-size:12px;font-weight:bold;padding:2px 9px;border-radius:12px;color:#fff}
+  .match.strong{background:var(--pass)} .match.partial{background:var(--warn)}
+  .fitflag{font-size:12px;color:var(--bad);font-weight:bold}
+  .fitok{font-size:12px;color:var(--pass);font-weight:bold}
+  .small{font-size:12.5px;color:var(--mut)}
+  table.plan{width:100%;border-collapse:collapse;font-size:13.5px}
+  table.plan th,table.plan td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+  table.plan th{background:#f2f8ec;color:var(--emerald)}
+  .empty{border:1px dashed var(--line);border-radius:8px;padding:18px;text-align:center;color:var(--mut);font-size:14px;background:#fff}
+  .counts{font-size:13px;color:var(--mut);margin:4px 0 10px}
+  footer{color:var(--mut);font-size:12.5px;text-align:center;padding:14px}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">Asif SaaS Studio</div>
+  <h1>Clean-Label &amp; E-Number Replacement Finder</h1>
+  <p>Swap synthetic additives for natural, consumer-friendly alternatives — with dosages, trade-offs and label guidance.</p>
+</header>
+<div class="wrap">
+
+  <div class="banner"><b>Honest scope:</b> “Clean label” is a consumer and marketing concept, <b>not a legal category</b>. Natural replacements may themselves carry E-numbers — what changes is the <i>declaration and perception</i>, not always the chemistry. Preservative and antioxidant swaps must be proven in <b>challenge tests and shelf-life studies</b> before launch. Dosages are indicative starting points for trials, never guarantees. Regulatory status varies by market and changes over time — confirm the current rules for your product category before printing a label.</div>
+
+  <div class="card">
+    <h2>Find an additive</h2>
+    <div class="counts" id="counts"></div>
+    <label for="q">Search by E-number (with or without the “E”), additive name, or replacement name</label>
+    <input type="text" id="q" placeholder="Try: 319, E250, sorbate, rosemary, stevia…">
+    <label>Function</label>
+    <div class="chips" id="fnchips"></div>
+    <label for="cat">Your product category (filters replacements by best fit)</label>
+    <select id="cat"></select>
+  </div>
+
+  <div class="grid">
+    <div>
+      <div class="alist" id="alist"></div>
+      <div class="empty" id="nomatch" style="display:none">No additives match your search. Try an E-number (e.g. 202), a shorter name, or clear the function filter.</div>
+    </div>
+    <div class="card" id="detail">
+      <h2>Additive detail</h2>
+      <p class="small">Select an additive from the list to see its profile and replacement options.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Reformulation plan</h2>
+    <p class="small">Add swaps from any additive's detail panel. The plan keeps the label declaration for each swap so you can hand it straight to your label designer. The plan lives only in this page — copy or download it before closing.</p>
+    <div id="planwrap"></div>
+    <button class="btn" id="copyplan">Copy plan</button>
+    <button class="btn ghost" id="csvplan">Download plan CSV</button>
+    <button class="btn ghost" id="clearplan">Clear plan</button>
+    <div class="small" id="planmsg" style="margin-top:6px"></div>
+  </div>
+
+</div>
+<footer>Clean-Label &amp; E-Number Replacement Finder v1.0 · Asif SaaS Studio · By Dr. Asif Ahmad · Guidance only — validate every swap in trials and confirm current regulations for your market.</footer>
+
+<script>
+/*PURE-CORE-START*/
+/* ============ Clean-Label Replacement Finder — PURE CORE (no DOM) ============
+   Curated knowledge base + search / filter / plan logic.
+   Data conventions:
+   Additive: {e, n, f[], ap, o, w, s, keep, r[]}
+     e = E-number ("—" if none), n = name, f = functions, ap = typical applications,
+     o = origin, w = why brands move away, s = status note, keep = "keep as-is" verdict text or null,
+     r = replacements.
+   Replacement: {n, d, dose, m, c[], g, t}
+     n = name, d = label declaration, dose = indicative starting range,
+     m = "Strong" or "Partial", c = best-fit categories, g = regulatory note, t = trade-off.
+=========================================================================== */
+var FUNCTIONS = ["Preservative","Antioxidant","Emulsifier","Stabiliser & thickener","Colour","Sweetener","Acidity regulator","Raising agent","Flavour enhancer","Anti-caking & humectant"];
+var CATEGORIES = ["Bakery","Meat & seafood","Beverages","Sauces & dressings","Dairy & alternatives","Snacks","Confectionery"];
+var DB = [
+/* ---- Antioxidants ---- */
+{e:"E319",n:"TBHQ (tert-butylhydroquinone)",f:["Antioxidant"],ap:"Frying oils, instant noodles, crackers, snack seasonings, edible fats",o:"Synthetic",w:"A synthetic-sounding name consumers increasingly reject; several retailers list it as an ingredient to avoid.",s:"Permitted in the EU and US with category limits (typically up to 200 mg/kg on the fat). Not permitted in Japan.",keep:null,r:[
+{n:"Rosemary extract",d:"“Antioxidant: rosemary extract” (may be declared as E392 where the E-number system is used)",dose:"0.02–0.1% on the fat/oil basis (200–1,000 mg/kg of oil)",m:"Strong",c:["Snacks","Meat & seafood","Sauces & dressings"],g:"EU: authorised as E392 with category limits. US: used as a natural flavouring/antioxidant extract.",t:"Mild herbal note at high doses; cost per kg is higher and quality varies by supplier — standardise on carnosic acid content."},
+{n:"Mixed tocopherols",d:"“Antioxidant: mixed tocopherols” (E306)",dose:"0.02–0.2% on the fat basis — start at 0.05%",m:"Strong",c:["Snacks","Bakery","Sauces & dressings"],g:"EU: E306, quantum satis in most foods. US: GRAS. Still an E-number — the gain is a recognisable declaration.",t:"Weaker than TBHQ in severe frying duty; works best combined with citric acid (metal chelation) and good oil management."},
+{n:"Green tea extract",d:"“Green tea extract” (no E-number as a food ingredient in most markets)",dose:"0.01–0.05% on the fat basis",m:"Partial",c:["Snacks","Beverages"],g:"Generally accepted as a food extract in the EU/US; catechin content and any claims must be checked locally.",t:"Can add bitterness/astringency and colour at higher doses; less proven than rosemary in frying oils."}]},
+{e:"E320",n:"BHA (butylated hydroxyanisole)",f:["Antioxidant"],ap:"Cereals, chewing gum, dehydrated potatoes, fats and oils, snack foods",o:"Synthetic",w:"Long-running consumer concern and retailer avoid-lists; California lists BHA as a carcinogen under Proposition 65 (a labelling trigger, not a food ban).",s:"Permitted in the EU (E320) and US with limits; carries a Prop 65 warning obligation in California.",keep:null,r:[
+{n:"Mixed tocopherols",d:"“Antioxidant: mixed tocopherols” (E306)",dose:"0.02–0.2% on the fat basis",m:"Strong",c:["Snacks","Bakery","Confectionery"],g:"EU: E306. US: GRAS.",t:"Slightly less potent per unit weight; pair with rosemary for synergy."},
+{n:"Rosemary extract",d:"“Antioxidant: rosemary extract” (E392)",dose:"0.02–0.1% on the fat basis",m:"Strong",c:["Snacks","Meat & seafood"],g:"EU: E392 with category limits. US: accepted natural extract.",t:"Herbal carry-over possible in delicate products; deodorised grades cost more."}]},
+{e:"E321",n:"BHT (butylated hydroxytoluene)",f:["Antioxidant"],ap:"Packaging-adjacent antioxidant for cereals, snacks, chewing gum, oils",o:"Synthetic",w:"Frequently named on consumer avoid-lists; some markets and retailers restrict it.",s:"Permitted in the EU (E321) and US with limits; consumer pressure is the main driver for removal.",keep:null,r:[
+{n:"Mixed tocopherols",d:"“Antioxidant: mixed tocopherols” (E306)",dose:"0.02–0.2% on the fat basis",m:"Strong",c:["Snacks","Bakery","Confectionery"],g:"EU: E306. US: GRAS.",t:"Protects packaged foods less aggressively under heat stress — verify with accelerated shelf-life tests."},
+{n:"Rosemary extract",d:"“Antioxidant: rosemary extract” (E392)",dose:"0.02–0.1% on the fat basis",m:"Strong",c:["Snacks","Sauces & dressings"],g:"EU: E392. US: accepted natural extract.",t:"Flavour threshold is the ceiling in bland products."}]},
+{e:"E310",n:"Propyl gallate",f:["Antioxidant"],ap:"Fats and oils, soups, chewing gum, meat products",o:"Synthetic",w:"Synthetic gallate ester with low consumer recognition; often removed together with BHA/BHT.",s:"Permitted in the EU (E310) and US with limits, usually in blends with BHA/BHT and citric acid.",keep:null,r:[
+{n:"Rosemary extract",d:"“Antioxidant: rosemary extract” (E392)",dose:"0.02–0.1% on the fat basis",m:"Strong",c:["Meat & seafood","Snacks"],g:"EU: E392. US: accepted natural extract.",t:"Check colour contribution in pale fats."},
+{n:"Mixed tocopherols + citric acid",d:"“Antioxidant: mixed tocopherols” (E306); citric acid (E330) as chelator",dose:"Tocopherols 0.05–0.1% on fat; citric acid 0.005–0.02%",m:"Partial",c:["Sauces & dressings","Snacks"],g:"Both widely authorised (E306/E330).",t:"The blend replaces the synergy gallates provided; match performance only after oxidation testing (e.g. OSI/Rancimat comparison)."}]},
+/* ---- Preservatives ---- */
+{e:"E200",n:"Sorbic acid",f:["Preservative"],ap:"Cheese, bakery fillings, beverages, dried fruit, wine",o:"Nature-identical (also occurs in rowan berries)",w:"An E-number many brands remove for label simplicity, although sorbic acid is one of the better-studied, lower-concern preservatives.",s:"Permitted worldwide with category limits; most effective below pH 6.5. Honest view: a low-priority removal — see the cultured alternatives if the label must change.",keep:null,r:[
+{n:"Cultured dextrose / cultured wheat flour",d:"“Cultured dextrose” or “cultured wheat flour” (declared as an ingredient, no E-number)",dose:"0.5–2% of the recipe — supplier-guided",m:"Partial",c:["Bakery","Dairy & alternatives","Sauces & dressings"],g:"Marketed as food ingredients in the EU/US; status and naming differ by market — confirm with supplier documentation.",t:"Fermentate activity varies; weaker and narrower-spectrum than sorbic acid. Proof with challenge tests is essential."},
+{n:"Vinegar (buffered)",d:"“Vinegar” or “buffered vinegar”",dose:"0.1–1% depending on pH target",m:"Partial",c:["Sauces & dressings","Bakery"],g:"A conventional food ingredient everywhere.",t:"Only works where acidity is acceptable; flavour impact in delicate products."}]},
+{e:"E202",n:"Potassium sorbate",f:["Preservative"],ap:"Bakery goods, soft drinks, cheese, margarine, fruit preparations",o:"Synthetic salt of a nature-identical acid",w:"The most common “E-number to remove” in bakery briefs; consumers read it as a chemical preservative.",s:"Permitted worldwide with category limits; anti-mould workhorse in bakery. Any replacement is weaker — plan shelf-life accordingly.",keep:null,r:[
+{n:"Cultured wheat flour",d:"“Cultured wheat flour” (ingredient declaration, no E-number)",dose:"0.5–2% of flour weight — supplier-guided",m:"Partial",c:["Bakery"],g:"Sold as a clean-label ingredient in EU/US; confirm local status and naming.",t:"Good against mould in bread but not a like-for-like swap: expect shorter validated shelf life and run mould challenge tests."},
+{n:"Raisin juice concentrate",d:"“Raisin juice concentrate”",dose:"1–3% of the recipe in sweet bakery/fillings",m:"Partial",c:["Bakery","Confectionery"],g:"A conventional food ingredient.",t:"Naturally occurring sorbic/organic acids give mild inhibition only; adds sugars and colour — suited to sweet goods, not lean bread."},
+{n:"Vinegar (buffered)",d:"“Vinegar” / “buffered vinegar”",dose:"0.1–0.5% in bread systems with pH control",m:"Partial",c:["Bakery","Sauces & dressings"],g:"A conventional food ingredient everywhere.",t:"Suppresses rope and mould modestly; overuse flavours the crumb."}]},
+{e:"E211",n:"Sodium benzoate",f:["Preservative"],ap:"Carbonated and still soft drinks, juices, pickles, sauces, jams",o:"Synthetic salt of benzoic acid (which occurs naturally in berries)",w:"Focus of consumer concern in drinks (including the benzene-formation debate when combined with ascorbic acid under heat/light); many drink brands reformulate it out.",s:"Permitted in EU/US with limits (commonly 150 mg/L in EU soft drinks). Effective only in acidic products (pH < 4.5).",keep:null,r:[
+{n:"Cultured sugar / fermentate systems",d:"“Cultured sugar” (ingredient declaration)",dose:"0.1–0.5% in beverages — supplier-guided",m:"Partial",c:["Beverages","Sauces & dressings"],g:"Ingredient status varies by market; obtain supplier regulatory statements.",t:"Narrower spectrum than benzoate/sorbate systems; validate against yeasts (incl. Zygosaccharomyces) with challenge tests."},
+{n:"Hurdle approach: pasteurisation + lemon/vinegar acidity + cold chain",d:"No preservative declaration — process and pH do the work",dose:"Process-defined, not a dose",m:"Partial",c:["Beverages"],g:"No additive involved; hygiene and process rules apply instead.",t:"Shorter chilled shelf life and higher process cost; not suitable for ambient long-life drinks without validation."}]},
+{e:"E220",n:"Sulphur dioxide & sulphites (incl. E223 sodium metabisulfite)",f:["Preservative","Antioxidant"],ap:"Wine, dried fruit, fruit juices, crustaceans, sausages, dehydrated vegetables",o:"Mineral / synthetic",w:"Sulphites are allergens for a sensitive minority and must be declared above 10 mg/kg — many brands reduce or remove them for both label and allergen reasons.",s:"Allergen labelling is mandatory above 10 mg/kg SO2 in the EU and US. Permitted levels are tightly category-specific.",keep:null,r:[
+{n:"Ascorbic acid + citric acid (anti-browning system)",d:"“Ascorbic acid” (E300) and “citric acid” (E330) — kitchen-recognisable names",dose:"0.05–0.3% ascorbic acid in dips/cut fruit; product-specific",m:"Partial",c:["Beverages","Snacks"],g:"E300/E330 are among the most accepted additives in both EU and US.",t:"Controls browning, not microbes: sulphites' antimicrobial role in wine and dried fruit has no simple natural equal — expect shorter life and colour drift."},
+{n:"Lemon juice concentrate",d:"“Lemon juice concentrate”",dose:"0.5–2% in fruit preparations",m:"Partial",c:["Beverages","Confectionery"],g:"A conventional food ingredient.",t:"Mild antioxidant/acid effect only; flavour and acidity shift."}]},
+{e:"E250",n:"Sodium nitrite",f:["Preservative","Colour"],ap:"Cured meats — ham, bacon, frankfurters, salami (colour fixing + anti-botulinal protection)",o:"Synthetic (mineral-derived)",w:"Nitrite is scrutinised over nitrosamine formation; demand for “no added nitrite” meats is high. But nitrite also provides genuine Clostridium botulinum protection — removal is a safety decision, not just a label decision.",s:"Strict legal maxima and residual limits apply in cured meats (EU and US). The celery route below is nitrite from a vegetable source: chemically it IS nitrite once converted, and regulators treat the two markets differently.",keep:null,r:[
+{n:"Celery powder / celery juice (cultured)",d:"US: “celery powder” with the product labelled “Uncured” / “No nitrates or nitrites added except those naturally occurring”. EU: generally NOT accepted as a way to add nitrite function — nitrite from any source is regulated as an additive use.",dose:"0.2–0.5% celery powder, standardised to give ingoing nitrite equivalent to local limits — supplier-guided",m:"Strong",c:["Meat & seafood"],g:"US (USDA): permitted route for “natural/uncured” claims with the qualifying statement. EU: EFSA/Commission position is that vegetable nitrite used for curing is an additive function — expect E250-style control.",t:"The honest nuance: this swaps the declaration, not the chemistry — nitrate in celery is converted to the same nitrite. Dose control is harder because vegetable nitrite content varies; colour and flavour differ slightly."},
+{n:"Cherry powder (acerola) — cure accelerator partner",d:"“Cherry powder” / “acerola cherry powder”",dose:"0.2–0.4% alongside celery powder",m:"Partial",c:["Meat & seafood"],g:"A food ingredient; used as a natural ascorbate source.",t:"Not a nitrite source itself — it accelerates curing colour (as ascorbate/erythorbate does) and is normally paired with celery powder."},
+{n:"Swiss chard juice powder",d:"“Swiss chard juice powder”",dose:"Supplier-guided to nitrite-equivalent target",m:"Partial",c:["Meat & seafood"],g:"US: used in natural curing blends. EU: same additive-function caveat as celery.",t:"Another nitrate-rich vegetable route — same chemical nuance and variability as celery; less widely standardised."}]},
+{e:"E251",n:"Sodium nitrate",f:["Preservative","Colour"],ap:"Slow-cured and fermented meats, some cheeses (reservoir that converts to nitrite)",o:"Synthetic (mineral-derived)",w:"Same nitrosamine debate as nitrite; traditional slow-cure products are under clean-label pressure.",s:"Permitted with category maxima in the EU/US; converts to nitrite during ripening.",keep:null,r:[
+{n:"Celery powder (nitrate-rich)",d:"US: “celery powder”, with “uncured” qualifying statements. EU: additive-function caveat as for E250.",dose:"0.2–0.5%, standardised",m:"Partial",c:["Meat & seafood"],g:"US route accepted with qualifying labelling; EU treats functional nitrite addition as additive use.",t:"Conversion rate to nitrite depends on starter cultures and time — process control becomes critical."},
+{n:"Swiss chard / vegetable nitrate blends",d:"“Vegetable juice powder” blends",dose:"Supplier-guided",m:"Partial",c:["Meat & seafood"],g:"As celery: US natural-cure route; EU caveat applies.",t:"Less standardised than celery; batch variability is the main risk."}]},
+/* ---- Emulsifiers ---- */
+{e:"E472e",n:"DATEM (diacyltartaric acid esters of mono- and diglycerides)",f:["Emulsifier"],ap:"Bread and rolls (dough strength, volume), cakes, coffee whiteners",o:"Synthetic ester",w:"A long chemical name with an E-number; one of the first targets in bread clean-label briefs.",s:"Permitted in the EU/US with bakery limits. Functional loss on removal is real — replacement usually needs a system, not a single ingredient.",keep:null,r:[
+{n:"Sunflower lecithin",d:"“Sunflower lecithin” (E322 — still an E-number, but a familiar, allergen-friendly declaration; soy lecithin must declare SOY as an allergen)",dose:"0.3–1% on flour weight",m:"Partial",c:["Bakery","Confectionery"],g:"EU: E322 authorised. US: GRAS; sunflower grades avoid the soy allergen declaration.",t:"Weaker dough-strengthening than DATEM — expect some volume loss unless combined with enzymes."},
+{n:"Enzyme systems (lipase / phospholipase, ± xylanase, glucose oxidase)",d:"Usually a processing aid — often no label declaration; flour may be declared as “enzyme-treated flour” in some markets",dose:"ppm levels (typically 5–50 mg/kg flour) — supplier-guided",m:"Strong",c:["Bakery"],g:"Processing-aid status differs by market; confirm declaration duties with your enzyme supplier.",t:"The professional route for industrial bread: strong functional match, but requires bake trials and careful dosing."},
+{n:"Pulse proteins (chickpea / faba bean)",d:"“Chickpea flour” or “faba bean protein”",dose:"1–3% on flour weight",m:"Partial",c:["Bakery","Snacks"],g:"Conventional food ingredients.",t:"Contribute emulsification plus protein marketing value; beany notes possible at higher levels."}]},
+{e:"E481",n:"SSL (sodium stearoyl-2-lactylate)",f:["Emulsifier"],ap:"Bread (softness, volume), tortillas, pancakes, coffee whiteners",o:"Synthetic ester",w:"Chemical-sounding name; frequently removed alongside DATEM in bakery reformulation.",s:"Permitted in EU/US with limits.",keep:null,r:[
+{n:"Sunflower lecithin",d:"“Sunflower lecithin” (E322)",dose:"0.3–1% on flour weight",m:"Partial",c:["Bakery"],g:"EU: E322. US: GRAS; sunflower avoids soy allergen labelling.",t:"Softer crumb effect is weaker; anti-staling benefit is smaller."},
+{n:"Enzymes (amylase + lipase systems)",d:"Processing aid — often no declaration (market-dependent)",dose:"ppm levels — supplier-guided",m:"Strong",c:["Bakery"],g:"Confirm processing-aid status per market.",t:"Maltogenic amylases replace SSL's anti-staling role well; combined systems need trials."},
+{n:"Chickpea protein / aquafaba solids",d:"“Chickpea protein”",dose:"1–2% on flour weight",m:"Partial",c:["Bakery","Sauces & dressings"],g:"Conventional food ingredient.",t:"Adds protein story; flavour and colour need masking in white bread."}]},
+{e:"E471",n:"Mono- and diglycerides of fatty acids",f:["Emulsifier"],ap:"Bread, cakes, ice cream, margarine, peanut butter (anti-staling, crumb softening)",o:"Made from fats/oils (plant or animal) by glycerolysis — “semi-natural” perception problem is mostly the name",w:"Declared in full it reads as a chemical; consumer groups have questioned it, though safety assessments are favourable.",s:"Among the most widely permitted emulsifiers (EU E471; US GRAS). Clean-label pressure is moderate.",keep:null,r:[
+{n:"Sunflower / rapeseed lecithin",d:"“Sunflower lecithin” (E322)",dose:"0.2–0.5% of recipe (ice cream); 0.3–1% flour basis (bakery)",m:"Partial",c:["Bakery","Dairy & alternatives","Confectionery"],g:"EU: E322. US: GRAS.",t:"Does not replicate the amylose-complexing anti-staling effect; softness retention is shorter."},
+{n:"Enzyme anti-staling systems (maltogenic amylase)",d:"Processing aid — often no declaration",dose:"ppm levels — supplier-guided",m:"Partial",c:["Bakery"],g:"Market-dependent processing-aid status.",t:"Covers the bread use-case well; does nothing for ice cream or spreads."}]},
+{e:"E433",n:"Polysorbate 80 (polyoxyethylene sorbitan monooleate)",f:["Emulsifier"],ap:"Ice cream, non-dairy creamers, pickles, whipped toppings, some supplements",o:"Synthetic",w:"A synthetic-sounding name that appears on many consumer avoid-lists and retailer restricted lists.",s:"Permitted in EU/US with category limits; notable for label-driven removal rather than new safety findings.",keep:null,r:[
+{n:"Quillaja extract",d:"“Quillaja extract” (E999 where the E-number system applies)",dose:"0.01–0.05% in beverages/foams",m:"Partial",c:["Beverages","Dairy & alternatives"],g:"EU: E999 with limits (mainly drinks). US: permitted flavour/foaming agent in beverages.",t:"Excellent natural foaming/emulsifying saponin, but bitter at excess and mainly a drinks solution."},
+{n:"Sunflower lecithin",d:"“Sunflower lecithin” (E322)",dose:"0.2–0.5% of recipe",m:"Partial",c:["Dairy & alternatives","Confectionery"],g:"EU: E322. US: GRAS.",t:"In ice cream it changes meltdown and overrun behaviour — expect rebalancing with stabilisers."}]},
+/* ---- Stabilisers & thickeners ---- */
+{e:"E1422",n:"Modified starch — acetylated distarch adipate (representative of the modified-starch family E1404–E1452)",f:["Stabiliser & thickener"],ap:"Sauces, soups, pie fillings, yoghurts, ready meals (freeze–thaw and shear-stable thickening)",o:"Chemically modified plant starch",w:"“Modified” is one of the words consumers distrust most, even though the base is ordinary starch.",s:"Each modified starch has its own E-number and spec; all are permitted with category rules in the EU/US. Performance under freeze–thaw and retort is why they persist.",keep:null,r:[
+{n:"Functional pulse flours (chickpea / faba bean)",d:"“Chickpea flour” / “faba bean flour” — declared as ordinary ingredients",dose:"2–6% of recipe, replacing starch 1:1 by trial",m:"Partial",c:["Sauces & dressings","Snacks","Meat & seafood"],g:"Conventional food ingredients everywhere.",t:"Bring body plus protein/fibre; slight flavour and colour; not a drop-in for clear sauces."},
+{n:"Native starches (tapioca / potato / waxy maize)",d:"“Tapioca starch” / “potato starch” / “corn starch”",dose:"2–5% of recipe",m:"Partial",c:["Sauces & dressings","Dairy & alternatives","Confectionery"],g:"Conventional food ingredients (no E-number).",t:"Thinner freeze–thaw stability and more syneresis; waxy types perform best. Expect a shorter texture life."},
+{n:"Citrus fibre",d:"“Citrus fibre”",dose:"0.5–2% of recipe, often blended with native starch",m:"Partial",c:["Sauces & dressings","Meat & seafood","Dairy & alternatives"],g:"A food ingredient (fibre) in EU/US; confirm fibre-claim rules if you declare fibre content.",t:"Adds water binding and a “fibre” story; can read slightly pulpy in smooth sauces."}]},
+{e:"E466",n:"CMC (carboxymethyl cellulose / cellulose gum)",f:["Stabiliser & thickener","Emulsifier"],ap:"Ice cream, beverages, bakery fillings, gluten-free baking, sauces",o:"Semi-synthetic (from plant cellulose)",w:"“Cellulose gum” attracts clean-label briefs, especially in ice cream and drinks.",s:"Permitted in EU/US; also serves as the gluten-free baker's body-builder, where removal is hardest.",keep:null,r:[
+{n:"Citrus fibre",d:"“Citrus fibre”",dose:"0.5–1.5% of recipe",m:"Partial",c:["Dairy & alternatives","Sauces & dressings","Bakery"],g:"Food ingredient in EU/US.",t:"Good water binding; less clean viscosity curve than CMC, slight pulp note."},
+{n:"Guar gum",d:"“Guar gum” (E412 — a natural gum that still has an E-number)",dose:"0.1–0.5% of recipe",m:"Partial",c:["Dairy & alternatives","Bakery","Beverages"],g:"EU: E412. US: GRAS.",t:"A plant-seed gum most consumers accept; can be slimy if overdosed in drinks."},
+{n:"Chia or flax mucilage systems",d:"“Chia seed” / “ground flaxseed”",dose:"1–3% of recipe",m:"Partial",c:["Bakery","Dairy & alternatives"],g:"Conventional food ingredients.",t:"Best in rustic/gluten-free products; visible seeds unless milled fine."}]},
+{e:"E407",n:"Carrageenan",f:["Stabiliser & thickener"],ap:"Chocolate milk, dairy and plant drinks, ice cream, processed meats, desserts (gelling protein-reactive gum)",o:"Seaweed extract (natural origin, processed)",w:"The most debated gum in clean-label work: social-media-driven concern is high despite regulatory re-evaluations keeping it authorised; many dairy brands removed it pre-emptively.",s:"Authorised in the EU (E407) and US; degraded carrageenan (poligeenan) is a different, non-food substance and not what is used in food. Removal is usually a marketing decision.",keep:null,r:[
+{n:"Gellan gum",d:"“Gellan gum” (E418)",dose:"0.02–0.15% in drinks; 0.1–0.3% in gels",m:"Partial",c:["Beverages","Dairy & alternatives"],g:"EU: E418. US: GRAS for many uses.",t:"Excellent suspension in drinks at very low dose; gel texture is more brittle than carrageenan's elastic gel."},
+{n:"Pectin",d:"“Pectin” (E440)",dose:"0.2–0.8% depending on system",m:"Partial",c:["Dairy & alternatives","Confectionery","Beverages"],g:"EU: E440, among the most consumer-accepted gums. US: GRAS.",t:"Works beautifully in acidified dairy and fruit systems; not a direct chocolate-milk suspension swap on its own."},
+{n:"Locust bean gum (LBG) blends",d:"“Locust (carob) bean gum” (E410)",dose:"0.1–0.4%, usually blended with xanthan or guar",m:"Partial",c:["Dairy & alternatives","Sauces & dressings"],g:"EU: E410. US: GRAS.",t:"Blend-dependent; supply and price of LBG are volatile."}]},
+{e:"E415",n:"Xanthan gum",f:["Stabiliser & thickener","Emulsifier"],ap:"Dressings, gluten-free baking, sauces, beverages",o:"Fermentation-derived (bacterial fermentation of sugars)",w:"Occasionally questioned because of the name — yet it is produced by fermentation, the same family of processes consumers accept in cultured foods.",s:"Authorised in the EU (E415) and US (GRAS). Most clean-label standards accept xanthan. Typical advice: keep.",keep:"Keep as-is. Xanthan is fermentation-derived, effective at very low doses (0.05–0.5%), and accepted by nearly all clean-label standards. Removing it usually costs more texture quality than the label gains. If a retailer standard excludes it, guar gum or citrus fibre can cover some uses — at weaker suspension performance.",r:[]},
+{e:"E405",n:"Propylene glycol alginate (PGA)",f:["Stabiliser & thickener","Emulsifier"],ap:"Beer foam stabilisation, salad dressings, ice cream, fruit drinks",o:"Semi-synthetic (from seaweed alginate)",w:"“Propylene glycol” in the name triggers consumer alarm out of proportion to the chemistry.",s:"Permitted in EU/US with limits, chiefly in beer and dressings.",keep:null,r:[
+{n:"Citrus fibre",d:"“Citrus fibre”",dose:"0.5–1.5% in dressings",m:"Partial",c:["Sauces & dressings","Beverages"],g:"Food ingredient in EU/US.",t:"Covers dressings body; does not stabilise beer foam the same way."},
+{n:"Pectin (amidated / HM grades)",d:"“Pectin” (E440)",dose:"0.2–0.6% in acidified drinks",m:"Partial",c:["Beverages","Sauces & dressings"],g:"EU: E440. US: GRAS.",t:"Good in acidic drinks; beer-foam use is not equivalent — brewers usually accept PGA or drop the claim."}]},
+/* ---- Colours ---- */
+{e:"E102",n:"Tartrazine",f:["Colour"],ap:"Soft drinks, confectionery, desserts, sauces, snacks (lemon yellow)",o:"Synthetic azo dye",w:"One of the “Southampton six”: in the EU, foods containing it must carry the warning “may have an adverse effect on activity and attention in children”.",s:"EU: permitted with the mandatory activity/attention warning. US: permitted as FD&C Yellow 5 with name declaration.",keep:null,r:[
+{n:"Colouring food: turmeric / curcumin",d:"“Turmeric extract” or “colour: curcumin” (E100)",dose:"0.01–0.1% — shade-guided",m:"Partial",c:["Beverages","Confectionery","Sauces & dressings"],g:"E100 authorised in EU; turmeric is a standard US colour (exempt category).",t:"Less light-stable than tartrazine and can fade; slight earthy note at high levels; pH-sensitive."},
+{n:"Lutein (marigold extract)",d:"“Lutein” / “marigold extract” (E161b)",dose:"0.005–0.05%",m:"Partial",c:["Beverages","Dairy & alternatives"],g:"EU: E161b with limits. US: limited colour uses — check category.",t:"Oil-soluble; needs emulsification in drinks; cost is higher."}]},
+{e:"E110",n:"Sunset yellow FCF",f:["Colour"],ap:"Orange drinks, sweets, jellies, snacks, sauces",o:"Synthetic azo dye",w:"A Southampton-six colour: EU packs must carry the activity/attention warning.",s:"EU: permitted with warning label. US: FD&C Yellow 6.",keep:null,r:[
+{n:"Colouring foods: paprika + annatto blends",d:"“Paprika extract” / “annatto” (E160c / E160b) or colouring-food concentrates",dose:"0.02–0.2% — shade-guided",m:"Partial",c:["Snacks","Sauces & dressings","Confectionery"],g:"Both widely authorised (E160b/E160c; US exempt colours).",t:"Orange shade achievable, but hue varies with pH and fat content; light stability is lower."},
+{n:"Beta-carotene",d:"“Beta-carotene” (E160a) — a name consumers recognise from carrots",dose:"0.005–0.05%",m:"Partial",c:["Beverages","Dairy & alternatives","Confectionery"],g:"EU: E160a. US: exempt-from-certification colour, GRAS nutrient.",t:"Yellow-orange rather than true orange; needs emulsion systems in drinks."}]},
+{e:"E129",n:"Allura red AC",f:["Colour"],ap:"Drinks, confectionery, desserts, cereals, sauces (bright red)",o:"Synthetic azo dye",w:"A Southampton-six colour — EU packs need the activity/attention warning, which alone drives most reformulation.",s:"EU: permitted with warning. US: FD&C Red 40, the most-used US red.",keep:null,r:[
+{n:"Colouring food: black carrot concentrate",d:"“Black carrot concentrate” / “vegetable juice (for colour)” in the US",dose:"0.1–1% — shade-guided",m:"Partial",c:["Beverages","Confectionery"],g:"Colouring foods are ingredients (not additive colours) in the EU when not selectively extracted; US: vegetable juice colour is exempt.",t:"Pink-red, pH-dependent (best in acidic products); less heat-stable than Allura red; strawberry-type shades rather than pillar-box red."},
+{n:"Beetroot red",d:"“Beetroot red” / “beet juice concentrate” (E162)",dose:"0.05–0.5%",m:"Partial",c:["Confectionery","Dairy & alternatives","Beverages"],g:"EU: E162. US: beet juice is an exempt colour.",t:"Fades with heat and light; earthy note if overdosed; poor in baked goods."},
+{n:"Lycopene (tomato extract)",d:"“Lycopene” / “tomato extract” (E160d)",dose:"0.005–0.05%",m:"Partial",c:["Sauces & dressings","Beverages"],g:"EU: E160d with limits. US: permitted colour in specified foods.",t:"Orange-red, oil-soluble; better heat stability than beetroot but higher cost."}]},
+{e:"E133",n:"Brilliant blue FCF",f:["Colour"],ap:"Drinks, confectionery, ice cream, desserts (bright blue; also blended for greens/purples)",o:"Synthetic",w:"A visibly artificial blue with no common natural counterpart — a frequent clean-label target in children's products.",s:"Permitted in EU (E133) and US (FD&C Blue 1).",keep:null,r:[
+{n:"Spirulina extract (phycocyanin)",d:"“Spirulina extract” — declared as an ingredient/colouring food in the EU; “spirulina extract” colour in the US",dose:"0.05–0.5% — shade-guided",m:"Partial",c:["Beverages","Confectionery","Dairy & alternatives"],g:"US: spirulina extract is an approved exempt colour for many foods. EU: sold as a colouring food (not an additive colour).",t:"The standard natural blue, but heat- and acid-sensitive: best in cold, near-neutral products; fades in baking and hot-fill."},
+{n:"Butterfly pea flower extract",d:"“Butterfly pea flower extract”",dose:"0.05–0.3%",m:"Partial",c:["Beverages"],g:"US: approved colour additive (2021) for many drinks/foods. EU: novel-food status must be checked market by market.",t:"Blue-to-purple pH showpiece in drinks; fades in acid over shelf life."}]},
+{e:"E171",n:"Titanium dioxide",f:["Colour"],ap:"Confectionery coatings, chewing gum, cake decorations, sauces (brilliant white opacifier)",o:"Mineral (synthetic pigment grade)",w:"EFSA concluded in 2021 that E171 could no longer be considered safe as a food additive (genotoxicity could not be excluded), and brands worldwide began removing it.",s:"No longer authorised in EU foods since 2022 (removed from the Union list). Still permitted in the US (up to 1% by weight) and some other markets — a genuine EU/US divergence.",keep:null,r:[
+{n:"Calcium carbonate",d:"“Calcium carbonate” (E170)",dose:"0.1–1% in coatings — opacity-guided",m:"Partial",c:["Confectionery","Bakery"],g:"EU: E170 authorised. US: GRAS.",t:"Less brilliant white than TiO2; higher doses can taste chalky and affect texture."},
+{n:"Rice starch / native starch opacifier systems",d:"“Rice starch” (ingredient declaration)",dose:"1–5% in sauces/batters",m:"Partial",c:["Sauces & dressings","Bakery"],g:"Conventional food ingredient.",t:"Gives opacity in wet systems, not the hard-pan coating brilliance of TiO2."},
+{n:"Starch-based white coating systems (supplier blends)",d:"Declared by components (starches, calcium salts)",dose:"Supplier-guided",m:"Partial",c:["Confectionery"],g:"Component-based; verify each component's status.",t:"Closest commercial route for sugar-coated products; finish is slightly less glossy."}]},
+{e:"E150c",n:"Ammonia caramel (caramel colour class III)",f:["Colour"],ap:"Colas and dark drinks, sauces, gravies, baked goods, pet food",o:"Made by heating sugars with ammonia compounds",w:"“Ammonia caramel” reads badly on a label; its 4-MEI by-product has been a public concern (California Prop 65 listing for 4-MEI).",s:"Permitted in EU (E150c) and US; plain caramel (E150a) needs no ammonia/sulfite reactants.",keep:null,r:[
+{n:"Plain caramel (class I)",d:"“Plain caramel” / “caramel colour” (E150a)",dose:"0.1–2% — shade-guided",m:"Partial",c:["Beverages","Sauces & dressings"],g:"EU: E150a. US: caramel colour is a standard exempt colour.",t:"Lighter colour strength — dark cola shades may need more, with flavour impact."},
+{n:"Malt extract / burnt sugar (sugar colour by ingredient name)",d:"“Barley malt extract” or “burnt sugar syrup”",dose:"0.5–3% of the recipe, shade-guided",m:"Partial",c:["Bakery","Sauces & dressings"],g:"Conventional food ingredients; note barley = gluten allergen declaration for malt extract.",t:"Best in bakery/savoury systems; adds flavour and sugars."}]},
+/* ---- Sweeteners ---- */
+{e:"E950",n:"Acesulfame K (acesulfame potassium)",f:["Sweetener"],ap:"Zero-sugar drinks, yoghurts, desserts, chewing gum, tabletop sweeteners",o:"Synthetic",w:"A chemical-sounding name consumers increasingly avoid in “no artificial sweeteners” positioning.",s:"Permitted in EU (E950) and US with category limits; almost always blended with sucralose or stevia for taste.",keep:null,r:[
+{n:"Steviol glycosides (stevia)",d:"“Steviol glycosides” / “stevia extract” (E960 — a natural-source sweetener that still carries an E-number)",dose:"0.01–0.05% for high-purity Reb A/M grades — sweetness-guided",m:"Partial",c:["Beverages","Dairy & alternatives","Confectionery"],g:"EU: E960 authorised. US: high-purity steviol glycosides are GRAS (whole-leaf/crude extracts are not).",t:"Licorice/bitter aftertaste in some grades (Reb M is cleaner); provides sweetness only — bulking must come from elsewhere."},
+{n:"Monk fruit extract (luo han guo)",d:"“Monk fruit extract”",dose:"0.01–0.05%",m:"Partial",c:["Beverages","Dairy & alternatives"],g:"US: GRAS. EU: novel-food authorisation has been pending/restricted — verify before EU launch.",t:"Clean taste but expensive and supply-limited; usually blended with erythritol or stevia."}]},
+{e:"E951",n:"Aspartame",f:["Sweetener"],ap:"Diet soft drinks, sugar-free gum, yoghurts, desserts, tabletop sweeteners",o:"Synthetic (dipeptide ester)",w:"The most debated sweetener: in 2023 IARC classed it “possibly carcinogenic” (Group 2B) while JECFA kept the ADI — the headlines, not a ban, drive reformulation. EU labels must also state “contains a source of phenylalanine”.",s:"Still permitted in EU (E951, with the phenylalanine statement) and US; not heat-stable, so absent from baked goods.",keep:null,r:[
+{n:"Steviol glycosides (stevia)",d:"“Steviol glycosides” (E960)",dose:"0.01–0.05%",m:"Partial",c:["Beverages","Dairy & alternatives","Confectionery"],g:"EU: E960. US: GRAS (high-purity).",t:"Unlike aspartame it is heat-stable (usable in baking); taste profile differs — re-profile flavourings."},
+{n:"Monk fruit extract",d:"“Monk fruit extract”",dose:"0.01–0.05%",m:"Partial",c:["Beverages"],g:"US: GRAS. EU: check novel-food status.",t:"Cost and availability are the constraints."},
+{n:"Erythritol blends (with stevia/monk fruit)",d:"“Erythritol” (E968) plus the high-intensity partner",dose:"Erythritol 0.5–5% to restore bulk in dry mixes/desserts",m:"Partial",c:["Bakery","Confectionery","Dairy & alternatives"],g:"EU: E968. US: GRAS.",t:"Erythritol alone is ~70% as sweet as sugar with a cooling effect; polyol laxation labelling may apply at high levels in the EU."}]},
+{e:"E955",n:"Sucralose",f:["Sweetener"],ap:"Drinks, bakery, dairy, sauces, tabletop (heat-stable workhorse)",o:"Synthetic (chlorinated sucrose derivative)",w:"“Made from sugar” positioning has not protected it from artificial-sweetener avoidance; several brands market “no sucralose”.",s:"Permitted in EU (E955) and US; heat-stable, unlike aspartame.",keep:null,r:[
+{n:"Steviol glycosides (stevia)",d:"“Steviol glycosides” (E960)",dose:"0.01–0.05%",m:"Partial",c:["Beverages","Bakery","Dairy & alternatives"],g:"EU: E960. US: GRAS (high-purity).",t:"Also heat-stable, so bakery uses transfer; onset of sweetness is slower — blends taste rounder."},
+{n:"Monk fruit extract",d:"“Monk fruit extract”",dose:"0.01–0.05%",m:"Partial",c:["Beverages","Dairy & alternatives"],g:"US: GRAS. EU: verify novel-food status.",t:"Premium cost; often blended with stevia to balance taste and price."}]},
+{e:"E954",n:"Saccharin",f:["Sweetener"],ap:"Tabletop sweeteners, drinks, canned fruit, low-cost sugar-free products",o:"Synthetic (one of the oldest artificial sweeteners)",w:"A legacy name with a dated safety debate in consumers' minds; rarely chosen for new clean-positioned products.",s:"Permitted in EU (E954) and US with limits; the historical US warning label was removed in 2000.",keep:null,r:[
+{n:"Steviol glycosides (stevia)",d:"“Steviol glycosides” (E960)",dose:"0.01–0.05%",m:"Partial",c:["Beverages","Confectionery"],g:"EU: E960. US: GRAS (high-purity).",t:"Removes saccharin's metallic aftertaste; cost rises."},
+{n:"Monk fruit extract",d:"“Monk fruit extract”",dose:"0.01–0.05%",m:"Partial",c:["Beverages"],g:"US: GRAS. EU: verify novel-food status.",t:"Cleaner label story; supply is the limit."}]},
+/* ---- Flavour enhancer ---- */
+{e:"E621",n:"MSG (monosodium glutamate)",f:["Flavour enhancer"],ap:"Soups, snacks, seasonings, ready meals, sauces, processed meats",o:"Fermentation-produced (industrial fermentation of sugars) — yet perceived as synthetic",w:"“No MSG” is one of the oldest clean-label claims, rooted in outdated anecdote rather than current safety assessments; brands remove the declaration, not the glutamate.",s:"Authorised in the EU (E621, with a 10 g/kg general limit) and US (GRAS, declared). Honest framing: the swaps below keep glutamate — from foods — while changing the declaration.",keep:null,r:[
+{n:"Yeast extract",d:"“Yeast extract” — a kitchen-plausible ingredient name",dose:"0.2–1% of recipe",m:"Strong",c:["Sauces & dressings","Snacks","Meat & seafood"],g:"A food ingredient in EU/US (not an additive).",t:"Contains natural glutamates — that is precisely why it works. The swap changes the declaration, not the glutamate. Adds yeasty depth; not for delicate products."},
+{n:"Tomato powder / concentrated tomato",d:"“Tomato powder”",dose:"0.5–3% of recipe",m:"Partial",c:["Sauces & dressings","Snacks"],g:"Conventional food ingredient.",t:"Glutamate-rich but brings colour and acidity; suits savoury, tomato-compatible products only."},
+{n:"Mushroom powder (shiitake / porcini)",d:"“Mushroom powder”",dose:"0.3–1.5% of recipe",m:"Partial",c:["Sauces & dressings","Meat & seafood","Snacks"],g:"Conventional food ingredient.",t:"Guanylate-rich umami synergy; earthy flavour and cost limit dose."}]},
+/* ---- Acidity regulators, phosphates, anti-caking, humectant ---- */
+{e:"E450",n:"Phosphate salts — diphosphates & triphosphates (E450/E451)",f:["Acidity regulator","Raising agent","Stabiliser & thickener"],ap:"Processed cheese, cooked meats and seafood (water binding), bakery (baking-powder acid), potato products",o:"Mineral-derived salts",w:"“Phosphate-free” is a growing meat/dairy brief; high dietary phosphate intake is also a nutrition talking point.",s:"Permitted with category maxima in EU/US; total phosphate in meat products is capped. Functionally hard to replace in emulsified cheese and injected meats.",keep:null,r:[
+{n:"Citrus fibre + sodium bicarbonate water-binding system",d:"“Citrus fibre” and “sodium bicarbonate” (E500 — a store-cupboard name)",dose:"Citrus fibre 0.5–2%; bicarbonate adjusted to pH target",m:"Partial",c:["Meat & seafood"],g:"Citrus fibre is a food ingredient; E500 is universally permitted.",t:"Recovers part of the water binding in comminuted meats; cook loss and bite still differ — expect yield trials, and processed cheese generally cannot go fully phosphate-free."},
+{n:"Potassium citrate systems",d:"“Potassium citrate” (E332) in place of sodium phosphates in some cheese/dairy systems",dose:"0.5–2% in processed cheese trials",m:"Partial",c:["Dairy & alternatives"],g:"EU: E332. US: GRAS.",t:"Still an E-number salt — the win is “phosphate-free” positioning, not full clean label; melt behaviour needs rework."}]},
+{e:"E338",n:"Phosphoric acid",f:["Acidity regulator"],ap:"Cola drinks (signature tang), processed cheese, jams",o:"Mineral acid",w:"Linked in consumer media to phosphate load and dental erosion debates in colas; some brands switch acidulants.",s:"Permitted in EU (E338) and US; defines cola flavour, so swaps change the product's signature.",keep:null,r:[
+{n:"Citric acid",d:"“Citric acid” (E330) — the most recognised acid on any label",dose:"Acidify to the same target pH — typically 0.05–0.2% in drinks",m:"Partial",c:["Beverages"],g:"EU: E330, quantum satis in drinks. US: GRAS.",t:"Cleaner, fruitier acid profile — the drink will taste less like a classic cola; flavour house work needed."},
+{n:"Lemon juice concentrate",d:"“Lemon juice concentrate”",dose:"0.2–1% to target acidity",m:"Partial",c:["Beverages","Sauces & dressings"],g:"Conventional food ingredient.",t:"Adds juice content claims potential, but acidity per ml is low and variable."}]},
+{e:"E551",n:"Silicon dioxide (silica)",f:["Anti-caking & humectant"],ap:"Powders — spices, salt, icing sugar, drink mixes, supplements (free-flow agent)",o:"Mineral (synthetic amorphous silica)",w:"An unfamiliar mineral name on powder labels; “silica-free” appears in supplement and spice briefs.",s:"Permitted in EU (E551) and US (up to 2% in many foods). EFSA re-evaluation noted data gaps on nano-fractions — a watch item, not a ban.",keep:null,r:[
+{n:"Rice-derived anti-caking (rice hull / rice flour systems)",d:"“Rice hull concentrate” or “rice flour” (ingredient declaration)",dose:"0.5–2% of the powder",m:"Partial",c:["Snacks","Bakery"],g:"Food-ingredient status in US blends; EU availability/naming varies — verify with supplier.",t:"Less effective than silica in humid supply chains and supply is limited; caking claims must be re-validated in storage tests."},
+{n:"Calcium carbonate / tricalcium phosphate",d:"“Calcium carbonate” (E170) or “tricalcium phosphate” (E341)",dose:"0.5–2% of the powder",m:"Partial",c:["Bakery","Snacks"],g:"Both authorised (E170/E341).",t:"Still E-numbers, but familiar mineral names; performance is humidity-dependent."}]},
+{e:"E420",n:"Sorbitol",f:["Anti-caking & humectant","Sweetener"],ap:"Sugar-free gum and mints, toothpaste-adjacent foods, diabetic products, humectant in baked goods",o:"Made by hydrogenating glucose (plant-derived feedstock)",w:"Polyol awareness is rising (“sugar alcohols” on labels); digestive tolerance drives some swaps.",s:"Permitted in EU (E420) and US (GRAS). EU requires a laxative-effect warning on foods with >10% added polyols.",keep:null,r:[
+{n:"Erythritol",d:"“Erythritol” (E968)",dose:"Replace sorbitol on sweetness/bulk by trial — often 1:1 in dry mixes",m:"Partial",c:["Confectionery","Bakery"],g:"EU: E968; the >10% polyol laxation statement also applies. US: GRAS.",t:"Best-tolerated polyol (mostly absorbed), but strong cooling effect and crystallisation in some systems; weaker humectancy than sorbitol."},
+{n:"Xylitol",d:"“Xylitol” (E967)",dose:"1:1 by weight in gum/mints trials",m:"Partial",c:["Confectionery"],g:"EU: E967. US: GRAS for specified uses.",t:"Closest taste match (same sweetness as sugar) with a dental-health story — but toxic to dogs (flag for pet-adjacent products) and costs more."},
+{n:"Allulose (rare sugar) — US-led option",d:"“Allulose”",dose:"1:1 bulk replacement in trials",m:"Partial",c:["Bakery","Beverages"],g:"US: GRAS and exempt from “added sugars” declaration. EU: novel food — NOT yet generally authorised; check status before EU use.",t:"Sugar-like behaviour with ~0.4 kcal/g; regulatory asymmetry between US and EU is the main catch."}]},
+/* ---- Low-concern “keep” examples ---- */
+{e:"E330",n:"Citric acid",f:["Acidity regulator","Antioxidant"],ap:"Almost everything acidic — drinks, jams, sauces, canned vegetables (acidulant and antioxidant synergist)",o:"Nature-identical — produced by fermentation (Aspergillus niger on sugars); the same acid that makes lemons sour",w:"Occasionally swept into blanket “remove all E-numbers” briefs — a good example of why blanket rules are bad formulation policy.",s:"Authorised without numerical limit in most foods (EU quantum satis; US GRAS).",keep:"Keep as-is. Citric acid is fermentation-produced, naturally present in citrus fruit, and recognised by shoppers when declared by name. Removing it gains nothing on the label (“citric acid” IS the friendly declaration) and loses pH control and antioxidant synergy. If a brief demands action, the only honest alternative is lemon juice concentrate — weaker, variable and flavour-active.",r:[]},
+{e:"E300",n:"Ascorbic acid (vitamin C)",f:["Antioxidant","Acidity regulator"],ap:"Fruit juices, cured-meat colour support, flour treatment, canned fruit (anti-browning)",o:"Nature-identical — industrially synthesised/fermented to be identical to vitamin C in food",w:"Rarely a removal target: it can be declared as “vitamin C” in many contexts, which consumers read as a nutrient, not an additive.",s:"Authorised widely (EU E300; US GRAS). Doubly useful: it is both an additive function and a vitamin.",keep:"Keep as-is. Ascorbic acid is vitamin C: shoppers read it as a nutrient, regulators treat it as one of the lowest-concern additives, and it actively protects colour and flavour. A “no E300” brief should be challenged — the swap would be to weaker, costlier antioxidant systems for zero label gain.",r:[]}
+];
+
+/* ---------- Core logic ---------- */
+function normE(s){ return String(s==null?"":s).toLowerCase().replace(/[\s\-_]/g,"").replace(/^e(?=\d)/,""); }
+function findAdditive(e){ for(var i=0;i<DB.length;i++){ if(normE(DB[i].e)===normE(e)) return DB[i]; } return null; }
+function allSwapsCount(){ var t=0; for(var i=0;i<DB.length;i++) t+=DB[i].r.length; return t; }
+function repText(rp){ return (rp.n+" "+rp.d+" "+rp.g+" "+rp.t).toLowerCase(); }
+function searchDB(q){
+  var needle = String(q==null?"":q).trim().toLowerCase();
+  if(!needle) return DB.slice();
+  var nE = normE(needle);
+  return DB.filter(function(a){
+    if(normE(a.e)===nE) return true;
+    if(a.n.toLowerCase().indexOf(needle)>-1) return true;
+    if(a.f.join(" ").toLowerCase().indexOf(needle)>-1) return true;
+    for(var i=0;i<a.r.length;i++){ if(repText(a.r[i]).indexOf(needle)>-1) return true; }
+    return false;
+  });
+}
+function filterByFunction(list, fn){
+  if(!fn || fn==="All") return list.slice();
+  return list.filter(function(a){ return a.f.indexOf(fn)>-1; });
+}
+function repFit(rp, cat){
+  if(!cat || cat==="All") return {fit:true, known:false};
+  return {fit: rp.c.indexOf(cat)>-1, known:true};
+}
+function planKey(e, repName){ return normE(e)+"|"+repName; }
+function planAdd(plan, e, repName){
+  var a = findAdditive(e); if(!a) return {plan:plan, added:false, reason:"unknown additive"};
+  var rp=null; for(var i=0;i<a.r.length;i++){ if(a.r[i].n===repName) rp=a.r[i]; }
+  if(!rp) return {plan:plan, added:false, reason:"unknown replacement"};
+  var k = planKey(e, repName);
+  for(var j=0;j<plan.length;j++){ if(plan[j].key===k) return {plan:plan, added:false, reason:"duplicate"}; }
+  var next = plan.slice();
+  next.push({key:k, e:a.e, additive:a.n, rep:rp.n, decl:rp.d, dose:rp.dose, match:rp.m});
+  return {plan:next, added:true, reason:"ok"};
+}
+function planRemove(plan, key){
+  return plan.filter(function(row){ return row.key!==key; });
+}
+function csvCell(v){ v=String(v==null?"":v); return /[",\n]/.test(v) ? '"'+v.replace(/"/g,'""')+'"' : v; }
+function planToCSV(plan){
+  var lines = ["Additive E-number,Additive,Replacement,Label declaration,Indicative dosage,Functional match"];
+  for(var i=0;i<plan.length;i++){ var r=plan[i];
+    lines.push([csvCell(r.e),csvCell(r.additive),csvCell(r.rep),csvCell(r.decl),csvCell(r.dose),csvCell(r.match)].join(",")); }
+  return lines.join("\n");
+}
+function planToText(plan){
+  if(!plan.length) return "Reformulation plan is empty.";
+  var out = ["CLEAN-LABEL REFORMULATION PLAN ("+plan.length+" swap"+(plan.length===1?"":"s")+")"];
+  for(var i=0;i<plan.length;i++){ var r=plan[i];
+    out.push((i+1)+". "+r.e+" "+r.additive+"  ->  "+r.rep+" ["+r.match+" match]\n   Declare as: "+r.decl+"\n   Indicative dosage: "+r.dose); }
+  out.push("Note: dosages are indicative starting points — validate with challenge tests and shelf-life studies; confirm current regulations for your market.");
+  return out.join("\n");
+}
+/*PURE-CORE-END*/
+</script>
+
+<script>
+/* ============ DOM layer ============ */
+var state = {q:"", fn:"All", cat:"All", sel:null, plan:[]};
+var $ = function(id){ return document.getElementById(id); };
+
+function renderCounts(){
+  $("counts").textContent = DB.length + " additives · " + allSwapsCount() + " natural swaps · " +
+    DB.filter(function(a){return a.keep;}).length + " honest \u201Ckeep as-is\u201D verdicts";
+}
+function renderChips(){
+  var fns = ["All"].concat(FUNCTIONS), h = "";
+  fns.forEach(function(f){
+    h += '<button data-fn="'+f+'" class="'+(state.fn===f?"on":"")+'">'+(f==="All"?"All functions":f)+'</button>';
+  });
+  $("fnchips").innerHTML = h;
+  Array.prototype.forEach.call($("fnchips").querySelectorAll("button"), function(b){
+    b.addEventListener("click", function(){ state.fn = b.getAttribute("data-fn"); renderChips(); renderList(); });
+  });
+}
+function renderCats(){
+  var h = '<option value="All">All categories</option>';
+  CATEGORIES.forEach(function(c){ h += '<option value="'+c+'"'+(state.cat===c?" selected":"")+'>'+c+'</option>'; });
+  $("cat").innerHTML = h;
+}
+function currentList(){ return filterByFunction(searchDB(state.q), state.fn); }
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;"); }
+function renderList(){
+  var list = currentList();
+  $("nomatch").style.display = list.length ? "none" : "block";
+  $("alist").innerHTML = list.map(function(a){
+    var tags = a.f.map(function(f){ return '<span class="tag fn">'+esc(f)+'</span>'; }).join("");
+    if(a.keep) tags += '<span class="tag keep">Keep as-is</span>';
+    else tags += '<span class="tag">'+a.r.length+' swap'+(a.r.length===1?"":"s")+'</span>';
+    return '<button class="aitem'+(state.sel===a.e?" on":"")+'" data-e="'+a.e+'"><span class="en">'+esc(a.e)+'</span> <span class="an">'+esc(a.n)+'</span><br><span class="af">'+esc(a.ap)+'</span><br>'+tags+'</button>';
+  }).join("");
+  Array.prototype.forEach.call($("alist").querySelectorAll(".aitem"), function(b){
+    b.addEventListener("click", function(){ state.sel = b.getAttribute("data-e"); renderList(); renderDetail(); });
+  });
+}
+function renderDetail(){
+  var a = state.sel ? findAdditive(state.sel) : null;
+  if(!a){ $("detail").innerHTML = '<h2>Additive detail</h2><p class="small">Select an additive from the list to see its profile and replacement options.</p>'; return; }
+  var h = '<h2>'+esc(a.e)+' — '+esc(a.n)+'</h2>';
+  h += '<p class="meta"><b>Function:</b> '+esc(a.f.join(", "))+'</p>';
+  h += '<p class="meta"><b>Typical uses:</b> '+esc(a.ap)+'</p>';
+  h += '<p class="meta"><b>Origin:</b> '+esc(a.o)+'</p>';
+  h += '<p class="meta"><b>Why brands move away:</b> '+esc(a.w)+'</p>';
+  h += '<p class="meta"><b>Status note:</b> '+esc(a.s)+'</p>';
+  if(a.keep){
+    h += '<div class="keepbox"><b>Verdict: keep as-is.</b><br>'+esc(a.keep)+'</div>';
+  } else {
+    h += '<h3>Natural replacement options'+(state.cat!=="All" ? ' — fit for: '+esc(state.cat) : '')+'</h3>';
+    a.r.forEach(function(rp){
+      var fit = repFit(rp, state.cat);
+      var inPlan = state.plan.some(function(row){ return row.key===planKey(a.e, rp.n); });
+      h += '<div class="rep"><h4>'+esc(rp.n)+' <span class="match '+rp.m.toLowerCase()+'">'+rp.m+' match</span> '+
+        (fit.known ? (fit.fit ? '<span class="fitok">Good fit: '+esc(state.cat)+'</span>' : '<span class="fitflag">Poor fit for '+esc(state.cat)+'</span>') : '')+'</h4>'+
+        '<p class="meta"><b>Declare as:</b> '+esc(rp.d)+'</p>'+
+        '<p class="meta"><b>Indicative dosage:</b> '+esc(rp.dose)+' <span class="small">(starting point — validate in trials)</span></p>'+
+        '<p class="meta"><b>Best fit:</b> '+esc(rp.c.join(", "))+'</p>'+
+        '<p class="meta"><b>Regulatory note:</b> '+esc(rp.g)+'</p>'+
+        '<p class="meta"><b>Trade-off:</b> '+esc(rp.t)+'</p>'+
+        '<button class="btn small" data-add="'+esc(rp.n)+'" '+(inPlan?"disabled":"")+'>'+(inPlan?"In plan ✓":"Add swap to plan")+'</button></div>';
+    });
+  }
+  $("detail").innerHTML = h;
+  Array.prototype.forEach.call($("detail").querySelectorAll("[data-add]"), function(b){
+    b.addEventListener("click", function(){
+      var res = planAdd(state.plan, a.e, b.getAttribute("data-add"));
+      if(res.added){ state.plan = res.plan; $("planmsg").textContent = "Added: "+a.e+" \u2192 "+b.getAttribute("data-add"); }
+      else { $("planmsg").textContent = "That swap is already in the plan."; }
+      renderPlan(); renderDetail();
+    });
+  });
+}
+function renderPlan(){
+  var w = $("planwrap");
+  if(!state.plan.length){
+    w.innerHTML = '<div class="empty">Your plan is empty. Open any additive and use “Add swap to plan”.</div>';
+    return;
+  }
+  var h = '<table class="plan"><tr><th>Replaces</th><th>Replacement</th><th>Declare on label as</th><th>Indicative dosage</th><th>Match</th><th></th></tr>';
+  state.plan.forEach(function(r){
+    h += '<tr><td><b>'+esc(r.e)+'</b> '+esc(r.additive)+'</td><td>'+esc(r.rep)+'</td><td>'+esc(r.decl)+'</td><td>'+esc(r.dose)+'</td><td>'+esc(r.match)+'</td><td><button class="btn small ghost" data-rm="'+esc(r.key)+'">Remove</button></td></tr>';
+  });
+  h += '</table>';
+  w.innerHTML = h;
+  Array.prototype.forEach.call(w.querySelectorAll("[data-rm]"), function(b){
+    b.addEventListener("click", function(){
+      state.plan = planRemove(state.plan, b.getAttribute("data-rm"));
+      renderPlan(); renderDetail();
+    });
+  });
+}
+function download(name, text, type){
+  var blob = new Blob([text], {type:type||"text/plain;charset=utf-8"});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement("a"); a.href = url; a.download = name;
+  document.body.appendChild(a); a.click();
+  setTimeout(function(){ URL.revokeObjectURL(url); a.remove(); }, 300);
+}
+$("q").addEventListener("input", function(){ state.q = this.value; renderList(); });
+$("cat").addEventListener("change", function(){ state.cat = this.value; renderDetail(); });
+$("copyplan").addEventListener("click", function(){
+  var txt = planToText(state.plan);
+  function done(){ $("planmsg").textContent = "Plan copied ("+state.plan.length+" swaps)."; }
+  if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(done, function(){ $("planmsg").textContent = txt; }); }
+  else { $("planmsg").textContent = txt; }
+});
+$("csvplan").addEventListener("click", function(){
+  if(!state.plan.length){ $("planmsg").textContent = "The plan is empty — add a swap first."; return; }
+  download("clean-label-reformulation-plan.csv", planToCSV(state.plan), "text/csv;charset=utf-8");
+});
+$("clearplan").addEventListener("click", function(){ state.plan = []; renderPlan(); renderDetail(); $("planmsg").textContent = "Plan cleared."; });
+
+renderCounts(); renderChips(); renderCats(); renderList(); renderPlan();
+if(DB.length){ state.sel = "E319"; renderList(); renderDetail(); }
+</script>
+</body>
+</html>
